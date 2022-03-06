@@ -29,11 +29,13 @@ function FoundTarget()
     local HRP = player.Character.HumanoidRootPart
     for _,v in pairs(game.Workspace.Objects.Characters:GetChildren()) do
         if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and players:FindFirstChild(v.Name).Team ~= player.Team and AimLock then
-            if OnlyTargetTitans and v:FindFirstChildOfClass("Model") and v:FindFirstChildOfClass("Model"):FindFirstChild("Nape") then
+            if not OnlyTargetTitans and not OnlyTargetHumans then
                 table.insert(Target,{v.HumanoidRootPart,(HRP.Position-v.HumanoidRootPart.Position).magnitude,v})
+            elseif v:FindFirstChildOfClass("Model") and v:FindFirstChildOfClass("Model"):FindFirstChild("Nape") then
+                if OnlyTargetTitans then
+                    table.insert(Target,{v.HumanoidRootPart,(HRP.Position-v.HumanoidRootPart.Position).magnitude,v})
+                end
             elseif OnlyTargetHumans then
-                table.insert(Target,{v.HumanoidRootPart,(HRP.Position-v.HumanoidRootPart.Position).magnitude,v})
-            elseif not OnlyTargetTitans and not OnlyTargetHumans then
                 table.insert(Target,{v.HumanoidRootPart,(HRP.Position-v.HumanoidRootPart.Position).magnitude,v})
             end
         end
