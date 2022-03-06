@@ -19,11 +19,13 @@ local AutoAim = false
 local AimLock = false
 local OnlyTargetTitans = false
 local OnlyTargetHumans = false
+local DoubleHook = false
 local connection;
 local TargetPosition;
 local mouse2down;
 local mouse2up;
-
+local inputbegan;
+local inputended;
 function FoundTarget()
     local Target = {}
     local HRP = player.Character.HumanoidRootPart
@@ -123,6 +125,25 @@ c:Toggle("Only Target Titans",function(bool)
 end)
 c:Toggle("Only Target Humans",function(bool)
     OnlyTargetHumans = bool
+end)
+c:Toggle("Q to Double Hook & boost",function(bool)
+    DoubleHook = bool
+    if bool == false then return end
+    inputbegan = userInputService.InputBegan:connect(function(input)
+        if DoubleHook == false then inputbegan:Disconnect() end
+        if input.KeyCode==Enum.KeyCode.Q then
+            VIM:SendKeyEvent(true, "E", false, game)
+            wait()
+            VIM:SendKeyEvent(true, "Space", false, game)
+        end
+    end)
+    inputended = userInputService.InputEnded:connect(function(input)
+        if DoubleHook == false then inputended:Disconnect() end
+        if input.KeyCode==Enum.KeyCode.Q then
+            VIM:SendKeyEvent(false, "E", false, game)
+            VIM:SendKeyEvent(false, "Space", false, game)
+        end
+    end)
 end)
 c:DestroyGui()
 while task.wait() do
