@@ -124,6 +124,7 @@ end)
 c:Toggle("Only Target Humans",function(bool)
     OnlyTargetHumans = bool
 end)
+c:DestroyGui()
 while task.wait() do
     if AimLock then
         pcall(Aim)
